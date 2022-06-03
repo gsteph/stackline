@@ -63,19 +63,21 @@ function Window:setupIndicator() -- {{{
 
     -- NOTE: self.stackIdx comes from yabai. Window is stacked if stackIdx > 0
     self.indicator_rect = {
-        x = xval,
-        y = self.frame.y + c.offset.y +
-            ((self.stackIdx - 1) * c.size * c.vertSpacing),
+        x = xval + ((self.stackIdx - 1) * c.size * c.vertSpacing),
+        y = self.frame.y + self.frame.h + c.offset.y,
         w = self.width,
-        h = c.size,
+        h = c.size
     }
+    hs.inspect(self.indicator_rect)
 
     self.icon_rect = {
-        x = xval + c.iconPadding,
+        x = self.indicator_rect.x + c.iconPadding,
         y = self.indicator_rect.y + c.iconPadding,
         w = self.indicator_rect.w - (c.iconPadding * 2),
         h = self.indicator_rect.h - (c.iconPadding * 2),
     }
+
+    hs.inspect(self.icon_rect)
     return self
 end -- }}}
 
@@ -236,8 +238,8 @@ function Window:getIndicatorPosition() -- {{{
             xval = self.screenFrame.w - self.width
         end
     else   -- side is 'left'
-        xval = self.frame.x - (self.width + c.offset.x)     -- position indicators on left edge
-        xval = math.max(xval, 0)                            -- don't go beyond left screen edge
+        xval = self.frame.x - c.offset.x     -- position indicators on left edge
+        xval = math.max(xval, 0)             -- don't go beyond left screen edge
     end
     return xval
 end -- }}}
